@@ -9,6 +9,9 @@ import UIKit
 import SnapKit
 
 class ViewController: UIViewController {
+    var tableViewItems = ["item1", "item2", "item3"]
+    
+    
     private lazy var button: UIButton = {
         let button = UIButton()
         button.setTitle(
@@ -25,6 +28,16 @@ class ViewController: UIViewController {
         return button
     }()
     
+    private lazy var temptable: UITableView = {
+        let temptable = UITableView()
+        temptable.layer.borderWidth = 1
+        temptable.layer.borderColor = UIColor.red.cgColor
+        temptable.translatesAutoresizingMaskIntoConstraints = false
+        temptable.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        return temptable
+    }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -33,14 +46,39 @@ class ViewController: UIViewController {
     
     func setupViews() {
         view.addSubview(button)
-        button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16.0).isActive = true
-        button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16.0).isActive = true
-//        button.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-//        button.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        view.addSubview(temptable)
+        self.temptable.dataSource = self
+        self.temptable.delegate = self
         
-//        button.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        
-//        button.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+//        button.snp.makeConstraints {
+//            $0.center.equalToSuperview()
+//
+//        }
+        temptable.snp.makeConstraints{
+            $0.edges.equalToSuperview()
+
+        }
     }
 }
 
+extension ViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = tableViewItems[indexPath.row]
+        return cell
+    }
+    
+}
+
+extension ViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        return
+    }
+}

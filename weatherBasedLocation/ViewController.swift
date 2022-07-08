@@ -10,7 +10,7 @@ import SnapKit
 
 class ViewController: UIViewController {
     var tableViewItems = ["item1", "item2", "item3"]
-    
+    var weatherImgName = ["basis","sunny","rainy","cloud","snow"]
     
     private lazy var button: UIButton = {
         let button = UIButton()
@@ -37,6 +37,15 @@ class ViewController: UIViewController {
         return temptable
     }()
     
+    private var weatherImg: UIImageView = {
+        let weatherImg = UIImageView()
+        weatherImg.layer.borderColor = UIColor.red.cgColor
+//        weatherImg.frame.size = CGSize(width: temptable.frame.width, height: temptable.frame.height)
+        weatherImg.frame.size = CGSize(width: 20, height: 20)
+        weatherImg.layer.borderColor = UIColor.red.cgColor
+        weatherImg.image = UIImage(named:"rpensionBanner.png")
+        return weatherImg
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,16 +56,27 @@ class ViewController: UIViewController {
     func setupViews() {
         view.addSubview(button)
         view.addSubview(temptable)
+        view.addSubview(weatherImg)
+        
         self.temptable.dataSource = self
         self.temptable.delegate = self
         
-//        button.snp.makeConstraints {
-//            $0.center.equalToSuperview()
-//
-//        }
-        temptable.snp.makeConstraints{
-            $0.edges.equalToSuperview()
+        button.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(60)
+            $0.left.equalToSuperview().offset(20)
 
+        }
+        temptable.snp.makeConstraints{
+            $0.top.equalTo(button.snp.bottom).offset(30)
+            $0.left.equalToSuperview().offset(20)
+            $0.bottom.equalToSuperview().offset(-50)
+            $0.right.equalToSuperview().offset(-200)
+        }
+        weatherImg.snp.makeConstraints{
+            $0.top.equalToSuperview().offset(60)
+            $0.left.equalTo(temptable.snp.right).offset(20)
+            $0.bottom.equalToSuperview().offset(-200)
+            $0.right.equalToSuperview().offset(-20)
         }
     }
 }
